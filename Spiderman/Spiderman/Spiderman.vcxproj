@@ -144,6 +144,9 @@
     <ClCompile Include="SwingPhysics.cpp" />
     <ClCompile Include="Webbing.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\..\..\Pictures\Camera Roll\spider man.jfif" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
