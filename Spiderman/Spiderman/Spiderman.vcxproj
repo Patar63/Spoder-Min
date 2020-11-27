@@ -88,6 +88,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>.\include </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -142,10 +143,18 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SwingPhysics.cpp" />
+    <ClCompile Include="Utilities.cpp" />
     <ClCompile Include="Webbing.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\..\..\..\..\Pictures\Camera Roll\spider man.jfif" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="JSON.h" />
+    <ClInclude Include="Matrix.h" />
+    <ClInclude Include="Transform.h" />
+    <ClInclude Include="Vector.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
