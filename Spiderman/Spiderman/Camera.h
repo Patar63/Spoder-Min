@@ -195,4 +195,3 @@ inline void from_json(const nlohmann::json& j, Camera& cam)
 #endif // !__CAMERAJSON_H__
 
 #endif // !__CAMERA_H__
-#pragma once

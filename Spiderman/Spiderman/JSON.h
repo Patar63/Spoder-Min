@@ -18,4 +18,3 @@ namespace File
 }
 
 #endif // !__JSON_H__
-

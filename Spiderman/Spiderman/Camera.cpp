@@ -24,7 +24,7 @@ void Camera::Perspective(float fovy, float aspect, float zNear, float zFar)
 {
 	//Sets the projection type to Perspective
 	m_projectionType = ProjType::Perspective;
-
+	
 	//Calculating Orthographic Projection Matrix Manually
 	float ys = 1.0f / tanf(ToRadians(fovy) * 0.5f);
 	float xs = ys / aspect;
@@ -32,10 +32,10 @@ void Camera::Perspective(float fovy, float aspect, float zNear, float zFar)
 	float B = (zNear + zFar) / nmf;
 	float C = (2.0f * zNear * zFar) / nmf;
 	m_projection = mat4(
-		vec4(xs, 0.f, 0.f, 0.f),
-		vec4(0.f, ys, 0.f, 0.f),
-		vec4(0.f, 0.f, B, -1.f),
-		vec4(0.f, 0.f, C, 0.f)
+		vec4(xs,  0.f, 0.f, 0.f),
+		vec4(0.f, ys,  0.f, 0.f),
+		vec4(0.f, 0.f, B,  -1.f),
+		vec4(0.f, 0.f, C,   0.f)
 	);
 
 	//Set aspect ratio to aspect
@@ -62,20 +62,20 @@ void Camera::Orthographic(float aspectRatio, float left, float right, float bott
 	{
 		//Calculating Orthographic Projection Matrix Manually
 		m_projection = mat4(
-			vec4(2.f / (right - left), 0.f, 0.f, -((right + left) / (right - left))),
-			vec4(0.f, 2.f / (top - bottom), 0.f, -((top + bottom) / (top - bottom))),
-			vec4(0.f, 0.f, -2.f / (zFar - zNear), -((zFar + zNear) / (zFar - zNear))),
-			vec4(0.f, 0.f, 0.f, 1.f)
+			vec4( 2.f/(right - left),		0.f,					0.f,					-((right + left) / (right - left))),
+			vec4( 0.f,						2.f/(top - bottom),		0.f,					-((top + bottom) / (top - bottom))),
+			vec4( 0.f,						0.f,					-2.f/(zFar - zNear),	-((zFar + zNear) / (zFar - zNear))),
+			vec4( 0.f,						0.f,					0.f,					1.f)
 		);
 	}
 	else
 	{
 		//Calculating Orthographic Projection Matrix Manually
 		m_projection = mat4(
-			vec4(2.f / (asRight - asLeft), 0.f, 0.f, -((asRight + asLeft) / (asRight - asLeft))),
-			vec4(0.f, 2.f / (top - bottom), 0.f, -((top + bottom) / (top - bottom))),
-			vec4(0.f, 0.f, -2.f / (zFar - zNear), -((zFar + zNear) / (zFar - zNear))),
-			vec4(0.f, 0.f, 0.f, 1.f)
+			vec4(2.f / (asRight - asLeft),	0.f,					0.f,					-((asRight + asLeft) / (asRight - asLeft))),
+			vec4(0.f,						2.f / (top - bottom),	0.f,					-((top + bottom)	 / (top - bottom))),
+			vec4(0.f,						0.f,					-2.f / (zFar - zNear),	-((zFar + zNear)	 / (zFar - zNear))),
+			vec4(0.f,						0.f,					0.f,					1.f)
 		);
 	}
 

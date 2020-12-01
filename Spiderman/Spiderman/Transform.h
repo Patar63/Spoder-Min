@@ -41,7 +41,7 @@ public:
 	Degrees GetRotationAngleZ() const;
 	vec3 GetScale() const;
 	mat4 GetLocalToWorldMatrix();
-
+	
 	//Simple conversion functions (written in private so they can't be accessed elsewhere)
 	static Degrees ToDegrees(Radians angle);
 	static Radians ToRadians(Degrees angle);
@@ -103,5 +103,4 @@ inline void from_json(const nlohmann::json& j, Transform& trans)
 
 
 #endif // !__TRANSFORM_H__
-
 

@@ -2,10 +2,10 @@
 
 #include <Box2D/Box2D.h>
 
-class Physics : public b2ContactListener
+class PhysicsPlaygroundListener : public b2ContactListener
 {
 public:
-	Physics();
+	PhysicsPlaygroundListener();
 
 	void BeginContact(b2Contact* contact) override;
 	void EndContact(b2Contact* contact) override;

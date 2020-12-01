@@ -43,7 +43,7 @@ void VertexManager::InitPlaneData()
 		1.f, 0.f,
 	};
 	int texCoordSize = 6 * 2 * sizeof(float);
-
+	
 	//Creates the Vertice VBO
 	glGenBuffers(1, &m_planeVertVBO);
 
@@ -54,7 +54,7 @@ void VertexManager::InitPlaneData()
 
 	//Creates the UV VBO
 	glGenBuffers(1, &m_planeUVVBO);
-
+	
 	//binds the buffer
 	glBindBuffer(GL_ARRAY_BUFFER, m_planeUVVBO);
 	//Buffers the vertex data
@@ -65,7 +65,7 @@ GLuint VertexManager::CreateVAO()
 {
 	//Pushes a new VAO handle into our VAO vector
 	m_VAOs.push_back(GL_NONE);
-
+	
 	//Creates a reference to it
 	GLuint& tempVAO = m_VAOs[m_VAOs.size() - 1];
 

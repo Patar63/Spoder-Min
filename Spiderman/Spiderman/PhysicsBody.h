@@ -20,13 +20,13 @@ enum class BodyType
 enum EntityCategories
 {
 	ENVIRONMENT = 0x0001,
-	GROUND = 0x0002,
-	OBJECTS = 0x0003,
-	PLAYER = 0x0004,
-	FRIENDLY = 0x0005,
-	ENEMY = 0x0006,
-	PICKUP = 0x0007,
-	TRIGGER = 0x0008
+	GROUND		= 0x0002,
+	OBJECTS		= 0x0003,
+	PLAYER		= 0x0004,
+	FRIENDLY	= 0x0005,
+	ENEMY		= 0x0006,
+	PICKUP		= 0x0007,
+	TRIGGER		= 0x0008
 };
 
 
@@ -35,11 +35,11 @@ class PhysicsBody
 public:
 	PhysicsBody() { };
 	//Constructs a circle collider
-	PhysicsBody(int entity, b2Body* body, float radius, vec2 centerOffset, bool sensor, EntityCategories category, int collidesWith, float friction = 1.f, float density = 1.f);
+	PhysicsBody(int entity, b2Body* body, float radius, vec2 centerOffset, bool sensor, EntityCategories category, int collidesWith, float friction=1.f, float density=1.f);
 	//Constructs a box collider
-	PhysicsBody(int entity, b2Body* body, float width, float height, vec2 centerOffset, bool sensor, EntityCategories category, int collidesWith, float friction = 1.f, float density = 1.f);
+	PhysicsBody(int entity, b2Body* body, float width, float height, vec2 centerOffset, bool sensor, EntityCategories category, int collidesWith, float friction=1.f, float density=1.f);
 	//Constructs a polygon collider
-	PhysicsBody(int entity, BodyType bodyType, b2Body* body, std::vector<b2Vec2> points, vec2 centerOffset, bool sensor, EntityCategories category, int collidesWith, float friction = 1.f, float density = 1.f);
+	PhysicsBody(int entity, BodyType bodyType, b2Body* body, std::vector<b2Vec2> points, vec2 centerOffset, bool sensor, EntityCategories category, int collidesWith, float friction=1.f, float density=1.f);
 
 	//Delete the physics body
 	void DeleteBody();
@@ -67,7 +67,7 @@ public:
 	float GetGravityScale() const;
 	//Gets the debug color
 	vec4 GetColor() const;
-
+	
 
 	//Gets the width of the physics body
 	float GetWidth() const;
@@ -122,8 +122,8 @@ public:
 	//Set whether the body has a fixed rotation
 	void SetFixedRotation(bool fixed);
 
-	void SetCategoryBit(EntityCategories category, int fixture = 0);
-	void SetCollisionBit(EntityCategories collision, int fixture = 0);
+	void SetCategoryBit(EntityCategories category, int fixture=0);
+	void SetCollisionBit(EntityCategories collision, int fixture=0);
 
 	//Set whether the bodies are being drawn
 	static void SetDraw(bool drawBodies);
@@ -148,7 +148,7 @@ private:
 	//Width and height of the body
 	float m_width = 0.f;
 	float m_height = 0.f;
-
+	
 
 	//Do you draw the bodies?
 	static bool m_drawBodies;

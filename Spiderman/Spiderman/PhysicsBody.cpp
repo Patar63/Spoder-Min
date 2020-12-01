@@ -3,7 +3,7 @@
 bool PhysicsBody::m_drawBodies = false;
 std::vector<int> PhysicsBody::m_bodiesToDelete;
 
-PhysicsBody::PhysicsBody(int entity, b2Body* body, float radius, vec2 centerOffset, bool sensor, EntityCategories category, int collidesWith, float friction, float density)
+PhysicsBody::PhysicsBody(int entity, b2Body * body, float radius, vec2 centerOffset, bool sensor, EntityCategories category, int collidesWith, float friction, float density)
 {
 	//Bodies don't reference a shape by themselves
 	//they need a shape that has been linked to a fixture
@@ -134,7 +134,7 @@ void PhysicsBody::DeleteBody()
 	}
 }
 
-void PhysicsBody::Update(Transform* trans)
+void PhysicsBody::Update(Transform * trans)
 {
 	//Stores the position;
 	m_position = m_body->GetPosition();
@@ -147,12 +147,12 @@ void PhysicsBody::Update(Transform* trans)
 void PhysicsBody::ApplyForce(vec3 force)
 {
 	m_body->ApplyForce(b2Vec2(float32(force.x), float32(force.y)),
-		b2Vec2(float32(m_body->GetPosition().x), float32(m_body->GetPosition().y)),
-		true);
+						b2Vec2(float32(m_body->GetPosition().x), float32(m_body->GetPosition().y)),
+						 true);
 }
 
 
-b2Body* PhysicsBody::GetBody() const
+b2Body * PhysicsBody::GetBody() const
 {
 	return m_body;
 }
@@ -181,7 +181,7 @@ vec3 PhysicsBody::GetVelocity() const
 	//Returns current velocity
 	b2Vec2 vel = m_body->GetLinearVelocity();
 	vec3 temp = vec3(vel.x, vel.y, 0.f);
-
+	
 	return temp;
 }
 
@@ -240,7 +240,7 @@ bool PhysicsBody::GetDraw()
 
 
 
-void PhysicsBody::SetBody(b2Body* body)
+void PhysicsBody::SetBody(b2Body * body)
 {
 	m_body = body;
 }
@@ -313,7 +313,7 @@ void PhysicsBody::ScaleBody(float scale, int fixture)
 
 		//Gets the shape value and casts as b2PolygonShape so we can access the vertices
 		b2PolygonShape* bodyShape = (b2PolygonShape*)m_body->GetFixtureList()[fixture].GetShape();
-
+		
 		//Center of the polygon
 		b2Vec2 center = bodyShape->m_centroid;
 

@@ -10,7 +10,7 @@
 #endif
 
 class vec2;
-class vec3;
+class vec3; 
 class vec4;
 
 class DLLEXPORT vec2
@@ -59,7 +59,7 @@ public:
 	vec3(float _x, float _y, float _z);
 	vec3(vec2 _xy, float _z);
 	vec3(vec4 _xyz);
-
+	
 	//Defaults to zero
 	float x = 0.f;
 	float y = 0.f;

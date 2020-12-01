@@ -9,7 +9,7 @@ void CameraSystem::Update(entt::registry& reg)
 	for (auto entity : view)
 	{
 		//Grabs and stores a reference to the Camera component (at x entity)
-		auto& camera = view.get(entity);
+		auto &camera = view.get(entity);
 
 		//Performs an update on the camera
 		camera.Update();
