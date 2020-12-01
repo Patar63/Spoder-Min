@@ -7,7 +7,7 @@ PhysicsPlayground::PhysicsPlayground(std::string name)
 	: Scene(name)
 {
 	//No gravity this is a top down scene
-	m_gravity = b2Vec2(0.f, -98.f);
+	m_gravity = b2Vec2(0.f, -60.f);
 	m_physicsWorld->SetGravity(m_gravity);
 
 	m_physicsWorld->SetContactListener(&listener);
@@ -361,7 +361,7 @@ void PhysicsPlayground::GUIWindowTwo()
 
 
 
-
+static bool jump = false;
 void PhysicsPlayground::KeyboardHold()
 {
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
@@ -371,17 +371,17 @@ void PhysicsPlayground::KeyboardHold()
 
 	if (Input::GetKey(Key::Shift))
 	{
-		speed *= 5.f;
+		speed *= 2.f;
 	}
 
-	if (Input::GetKey(Key::A))
+	if ((Input::GetKey(Key::A)) && (jump == false))
 	{
-		player.GetBody()->ApplyForceToCenter(b2Vec2(-400000.f * speed, 0.f), true);
+		player.GetBody()->ApplyForceToCenter(b2Vec2(-120000.f * speed, 0.f), true);
 	}
-	if (Input::GetKey(Key::D))
+	if ((Input::GetKey(Key::D)) && (jump == false))
 	{
-		player.GetBody()->ApplyForceToCenter(b2Vec2(400000.f * speed, 0.f), true);
-	}
+		player.GetBody()->ApplyForceToCenter(b2Vec2(120000.f * speed, 0.f), true);
+	} 
 
 	//Change physics body size for circle
 	if (Input::GetKey(Key::O))
@@ -410,6 +410,12 @@ void PhysicsPlayground::KeyboardDown()
 			player.GetBody()->ApplyLinearImpulseToCenter(b2Vec2(0.f, 160000.f), true);
 			canJump.m_canJump = false;
 		}
+	}
+	if (canJump.m_canJump == false) {
+		jump = true;
+	}
+	else if ((canJump.m_canJump == true)) {
+		jump = false;
 	}
 }
 
