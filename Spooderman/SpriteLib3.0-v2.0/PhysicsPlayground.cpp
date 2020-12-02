@@ -417,8 +417,24 @@ void PhysicsPlayground::KeyboardDown()
 	else if ((canJump.m_canJump == true)) {
 		jump = false;
 	}
-}
 
+
+}
+void PhysicsPlayground::MouseClick(SDL_MouseButtonEvent evnt) {
+	if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
+		int windowWidth = BackEnd::GetWindowWidth();
+		int windowHeight= BackEnd::GetWindowHeight();
+		int mainCam = MainEntities::MainCamera();
+		vec4 ortho = m_sceneReg->get<Camera>(mainCam).GetOrthoSize();
+		vec2 pos = vec2(
+			((evnt.x / static_cast<float>(windowHeight) * 2.f * ortho.w) - (ortho.w * static_cast<float>(windowWidth) / static_cast<float>(windowHeight))),
+			((-evnt.y / static_cast<float>(windowHeight) * 2.f * ortho.w) + ortho.w));
+		pos = pos + vec2(m_sceneReg->get<Camera>(mainCam).GetPositionX(), m_sceneReg->get<Camera>(mainCam).GetPositionY());
+		printf("(%f, %f)\n", pos.x, pos.y);
+		MousePosition.X = pos.x;
+		MousePosition.Y = pos.y;
+	}
+}
 void PhysicsPlayground::KeyboardUp()
 {
 	
