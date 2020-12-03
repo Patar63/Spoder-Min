@@ -83,6 +83,18 @@ void RenderingSystem::Update(entt::registry* reg)
 			drawShader.Unbind();
 		}
 	}
+
+	auto hudView = reg->view<Hud, Transform>();
+	for (auto entity : hudView) {
+		vec2 HudOffset = ECS::GetComponent<Hud>(entity).offset;
+
+		//every frame (maybe use a view to do this?)
+		vec3 oldPos = ECS::GetComponent<Transform>(entity).GetPosition();
+
+		vec3 playerPos = ECS::GetComponent<Transform>(MainEntities::MainPlayer()).GetPosition();
+
+		ECS::GetComponent<Transform>(entity).SetPosition(vec3(playerPos.x + HudOffset.x, playerPos.y + HudOffset.y, oldPos.z));
+	}
 }
 
 struct

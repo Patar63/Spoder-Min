@@ -24,8 +24,6 @@ void Scene::Unload()
 
 void Scene::InitScene(float windowWidth, float windowHeight)
 {
-	//Default scene class init just includes a camera so stuff doesn't immediately crash
-	printf("You shouldn't be running this, while initializing this Scene Type.\n");
 
 	//Dynamically allocates the register
 	if (m_sceneReg == nullptr)

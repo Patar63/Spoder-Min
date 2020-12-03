@@ -14,6 +14,7 @@
 #include "TranslateTrigger.h"
 #include "HorizontalScroll.h"
 #include "CanJump.h"
+#include "HUD.h"
 
 
 class ECS abstract

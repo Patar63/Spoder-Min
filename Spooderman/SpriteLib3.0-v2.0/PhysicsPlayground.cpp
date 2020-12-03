@@ -68,6 +68,36 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<Sprite>(entity).SetTransparency(0.5f);
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 0.f, 0.f));
 	}
+
+	//Setup score board
+	{
+
+		//Creates entity
+		auto entity = ECS::CreateEntity();
+
+		int width = BackEnd::GetWindowWidth();
+		int height = BackEnd::GetWindowHeight();
+
+		//Add components
+		ECS::AttachComponent<Sprite>(entity);
+		ECS::AttachComponent<Transform>(entity);
+		ECS::AttachComponent<Hud>(entity);
+
+		//Set up the components
+		std::string fileName = "ScoreDisplay.png";
+		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 30, 30);
+		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+		ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 30.f, 2.f));
+		ECS::GetComponent<Hud>(entity).offset = vec2(130, 65);
+
+		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+
+		float shrinkX = 0.f;
+		float shrinkY = 0.f;
+
+		b2Body* tempBody;
+		b2BodyDef tempDef;
+	}
 	
 	//Link entity
 	{
