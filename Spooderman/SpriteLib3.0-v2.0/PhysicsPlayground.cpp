@@ -6,6 +6,7 @@
 PhysicsPlayground::PhysicsPlayground(std::string name)
 	: Scene(name)
 {
+
 	//No gravity this is a top down scene
 	m_gravity = b2Vec2(0.f, -60.f);
 	m_physicsWorld->SetGravity(m_gravity);
@@ -182,7 +183,7 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 
 void PhysicsPlayground::Update()
 {
-	
+	SwingMechanic();
 }
 
 void PhysicsPlayground::GUI()
@@ -448,22 +449,58 @@ void PhysicsPlayground::KeyboardDown()
 		jump = false;
 	}
 
-
+	if (Input::GetKeyDown(Key::Enter))
+	{
+		MessageBox(NULL, "Placeholder Text", "Game Over", MB_OK | MB_ICONINFORMATION);
+	}
 }
+
+static float Mx=0.0,My=0.0, Px = 0.0, Py = 0.0;
 void PhysicsPlayground::MouseClick(SDL_MouseButtonEvent evnt) {
+	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
+	int windowWidth = BackEnd::GetWindowWidth();
+	int windowHeight = BackEnd::GetWindowHeight();
+	int mainCam = MainEntities::MainCamera();
 	if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
-		int windowWidth = BackEnd::GetWindowWidth();
-		int windowHeight= BackEnd::GetWindowHeight();
-		int mainCam = MainEntities::MainCamera();
+		if (swing == false) {
+		swing = true;
+
 		vec4 ortho = m_sceneReg->get<Camera>(mainCam).GetOrthoSize();
 		vec2 pos = vec2(
 			((evnt.x / static_cast<float>(windowHeight) * 2.f * ortho.w) - (ortho.w * static_cast<float>(windowWidth) / static_cast<float>(windowHeight))),
 			((-evnt.y / static_cast<float>(windowHeight) * 2.f * ortho.w) + ortho.w));
 		pos = pos + vec2(m_sceneReg->get<Camera>(mainCam).GetPositionX(), m_sceneReg->get<Camera>(mainCam).GetPositionY());
-		printf("(%f, %f)\n", pos.x, pos.y);
-		MousePosition.X = pos.x;
-		MousePosition.Y = pos.y;
+		Mx = pos.x;
+		My = pos.y;
+		Px = m_sceneReg->get<Camera>(mainCam).GetPositionX();
+		Py = m_sceneReg->get<Camera>(mainCam).GetPositionY();
 	}
+	}
+	if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_RIGHT)) {
+		swing = false;
+	}
+}
+void PhysicsPlayground::SwingMechanic()
+{
+	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
+	int mainCam = MainEntities::MainCamera();
+	Px = m_sceneReg->get<Camera>(mainCam).GetPositionX();
+	Py = m_sceneReg->get<Camera>(mainCam).GetPositionY();
+	vec2 diff = vec2(Mx-Px,My-Py);
+	float magDiff= sqrt((diff.x * diff.x)+(diff.y*diff.y));
+	vec2 Rdiff = diff/magDiff;
+	if (swing == true) {
+		player.GetBody()->ApplyForceToCenter(b2Vec2(100000.f * Rdiff.x, 100000.f * Rdiff.y), true);
+		printf("true");
+	}
+	else { printf("flase"); }
+	printf("( %f)", magDiff );
+	printf("(%f, %f)", Rdiff.x, Rdiff.y);
+	printf("(%f, %f)", Mx, My);
+	printf("(%f, %f)\n", Px, Py);
+
+	
+
 }
 void PhysicsPlayground::KeyboardUp()
 {
