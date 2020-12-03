@@ -21,6 +21,7 @@ public:
 	std::vector<float>xPos;
 	std::vector<float>yPos;
 	COORD MousePosition{ 0,0};
+	COORD PlayerPosition{ 0,0 };
 	void MouseClick(SDL_MouseButtonEvent evnt)override;
 	//Input overrides
 	void KeyboardHold() override;

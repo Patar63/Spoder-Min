@@ -424,6 +424,7 @@ void PhysicsPlayground::KeyboardDown()
 	}
 }
 void PhysicsPlayground::MouseClick(SDL_MouseButtonEvent evnt) {
+	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
 	if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
 		int windowWidth = BackEnd::GetWindowWidth();
 		int windowHeight= BackEnd::GetWindowHeight();
@@ -434,9 +435,10 @@ void PhysicsPlayground::MouseClick(SDL_MouseButtonEvent evnt) {
 			((-evnt.y / static_cast<float>(windowHeight) * 2.f * ortho.w) + ortho.w));
 		pos = pos + vec2(m_sceneReg->get<Camera>(mainCam).GetPositionX(), m_sceneReg->get<Camera>(mainCam).GetPositionY());
 		printf("(%f, %f)\n", pos.x, pos.y);
-		MousePosition.X = pos.x;
-		MousePosition.Y = pos.y;
+		printf("(%f, %f)\n", m_sceneReg->get<Camera>(mainCam).GetPositionX(), m_sceneReg->get<Camera>(mainCam).GetPositionY());
+
 	}
+	
 }
 void PhysicsPlayground::KeyboardUp()
 {
