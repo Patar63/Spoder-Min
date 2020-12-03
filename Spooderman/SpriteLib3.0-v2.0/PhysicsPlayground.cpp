@@ -452,17 +452,24 @@ void PhysicsPlayground::MouseClick(SDL_MouseButtonEvent evnt) {
 }
 void PhysicsPlayground::SwingMechanic()
 {
-	vec2 vec = vec2(1.f,0.f);
+	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
 	int mainCam = MainEntities::MainCamera();
 	Px = m_sceneReg->get<Camera>(mainCam).GetPositionX();
 	Py = m_sceneReg->get<Camera>(mainCam).GetPositionY();
+	vec2 diff = vec2(Mx-Px,My-Py);
+	float magDiff= sqrt((diff.x * diff.x)+(diff.y*diff.y));
+	vec2 Rdiff = diff/magDiff;
 	if (swing == true) {
+		player.GetBody()->ApplyForceToCenter(b2Vec2(100000.f * Rdiff.x, 100000.f * Rdiff.y), true);
 		printf("true");
 	}
 	else { printf("flase"); }
+	printf("( %f)", magDiff );
+	printf("(%f, %f)", Rdiff.x, Rdiff.y);
 	printf("(%f, %f)", Mx, My);
 	printf("(%f, %f)\n", Px, Py);
 
+	
 
 }
 void PhysicsPlayground::KeyboardUp()
