@@ -418,7 +418,10 @@ void PhysicsPlayground::KeyboardDown()
 		jump = false;
 	}
 
-
+	if (Input::GetKeyDown(Key::Enter))
+	{
+		MessageBox(NULL, "Placeholder Text", "Game Over", MB_OK | MB_ICONINFORMATION);
+	}
 }
 void PhysicsPlayground::MouseClick(SDL_MouseButtonEvent evnt) {
 	if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
