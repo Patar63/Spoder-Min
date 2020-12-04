@@ -100,7 +100,7 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 		b2BodyDef tempDef;
 	}
 	
-	//Spiderman entity
+	//Link entity
 	{
 		/*Scene::CreatePhysicsSprite(m_sceneReg, "LinkStandby", 80, 60, 1.f, vec3(0.f, 30.f, 2.f), b2_dynamicBody, 0.f, 0.f, true, true)*/
 
@@ -108,20 +108,14 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 		ECS::SetIsMainPlayer(entity, true);
 
 		//Add components
-		ECS::AttachComponent<Player>(entity);
 		ECS::AttachComponent<Sprite>(entity);
 		ECS::AttachComponent<Transform>(entity);
 		ECS::AttachComponent<PhysicsBody>(entity);
 		ECS::AttachComponent<CanJump>(entity);
-		ECS::AttachComponent<AnimationController>(entity);
-		
 
 		//Sets up the components
-		std::string fileName = "SM-Stand.png";
-//		std::string animations = "spidermanAnimations.json";
+		std::string fileName = "LinkStandby.png";
 		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 40, 30);
-//		ECS::GetComponent<Player>(entity).InitPlayer(fileName, animations, 70, 50, &ECS::GetComponent<Sprite>(entity),
-//			&ECS::GetComponent<AnimationController>(entity), &ECS::GetComponent<Transform>(entity), true, &ECS::GetComponent<PhysicsBody>(entity));
 		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 30.f, 2.f));
 
