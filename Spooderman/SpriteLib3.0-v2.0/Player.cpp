@@ -165,6 +165,7 @@ void Player::MovementUpdate()
 
 void Player::AnimationUpdate()
 {
+	m_animController = &ECS::GetComponent<AnimationController>(MainEntities::MainPlayer());
 	int activeAnimation = 0;
 
 	if (m_moving)

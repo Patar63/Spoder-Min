@@ -5,6 +5,61 @@
 
 #define TOPDOWN
 
+enum AnimEnums
+{
+	IDLELEFT,
+	IDLERIGHT,
+
+	//Only in Top down
+#ifdef TOPDOWN
+	IDLEUP,
+	IDLEDOWN,
+#endif
+
+	WALKLEFT,
+	WALKRIGHT,
+
+	//Only in Top down
+#ifdef TOPDOWN
+	WALKUP,
+	WALKDOWN,
+#endif
+
+	ATTACKLEFT,
+	ATTACKRIGHT,
+
+	//Only in Top down
+#ifdef TOPDOWN
+	ATTACKUP,
+	ATTACKDOWN
+#endif
+};
+
+enum AnimTypes
+{
+#ifdef TOPDOWN
+	IDLE = 0,
+	WALK = 4,
+	ATTACK = 8
+#endif
+#ifndef TOPDOWN
+	IDLE = 0,
+	WALK = 2,
+	ATTACK = 4
+#endif
+};
+
+enum AnimDir
+{
+	LEFT,
+	RIGHT,
+	//Only in Top Down
+#ifdef TOPDOWN
+	UP,
+	DOWN
+#endif
+};
+
 
 class Player
 {
