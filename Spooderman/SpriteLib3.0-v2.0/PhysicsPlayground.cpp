@@ -574,6 +574,37 @@ void PhysicsPlayground::SwingMechanic()
 	if (swing == true) {
 		player.GetBody()->ApplyForceToCenter(b2Vec2(100000.f * Rdiff.x, 100000.f * Rdiff.y), true);
 		printf("true");
+
+		/*
+		This was used to draw in the webbing for the swing, in place of the animation engine that wouldn't work.
+		However a problem occured in which the player vanished the camera stopped working, so it had to be scrapped.
+		{
+			//Creates entity
+			auto entity = ECS::CreateEntity();
+
+			int width = BackEnd::GetWindowWidth();
+			int height = BackEnd::GetWindowHeight();
+
+			//Add components
+			ECS::AttachComponent<Sprite>(entity);
+			ECS::AttachComponent<Transform>(entity);
+			ECS::AttachComponent<Hud>(entity);
+
+			//Set up the components
+			std::string fileName = "Webbing.png";
+			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 5, diff.y);
+			ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 30.f, 2.f));
+			ECS::GetComponent<Hud>(entity).offset = vec2(130, 65);
+
+			auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+
+			float shrinkX = 0.f;
+			float shrinkY = 0.f;
+
+			b2Body* tempBody;
+			b2BodyDef tempDef;
+		}*/
 	}
 	else { printf("flase"); }
 	printf("( %f)", magDiff );
