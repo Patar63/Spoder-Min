@@ -586,7 +586,7 @@ void PhysicsPlayground::SwingMechanic()
 		 if(score / 10 - scoreminus / 10>0){
 	printf("( %f)\n", score/10-scoreminus/10 );
 		 }
-		 else { printf("( %f)\n", 0.0); }
+		 else { printf("( %f)\n",0.0); }
 
 }
 
