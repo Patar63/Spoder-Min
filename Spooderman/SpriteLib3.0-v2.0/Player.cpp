@@ -37,44 +37,26 @@ void Player::InitPlayer(std::string& fileName, std::string& animationJSON, int w
 	//IDLE ANIMATIONS\\
 	
 	//Idle Left
-	m_animController->AddAnimation(animations["IdleLeft"].get<Animation>());
+	m_animController->AddAnimation(animations["Standing"].get<Animation>());
 	//Idle Right
-	m_animController->AddAnimation(animations["IdleRight"].get<Animation>());
-#ifdef TOPDOWN
-	//Idle Up
-	m_animController->AddAnimation(animations["IdleUp"].get<Animation>());
-	//Idle Down
-	m_animController->AddAnimation(animations["IdleDown"].get<Animation>());
-#endif
+	m_animController->AddAnimation(animations["Standing"].get<Animation>());
 
 	//Walk Animations\\
 
 	//WalkLeft
-	m_animController->AddAnimation(animations["WalkLeft"].get<Animation>());
+	m_animController->AddAnimation(animations["Walk"].get<Animation>());
 	//WalkRight
-	m_animController->AddAnimation(animations["WalkRight"].get<Animation>());
-#ifdef TOPDOWN
-	//WalkUP
-	m_animController->AddAnimation(animations["WalkUp"].get<Animation>());
-	//WalkDown
-	m_animController->AddAnimation(animations["WalkDown"].get<Animation>());
-#endif
+	m_animController->AddAnimation(animations["Walk"].get<Animation>());
 
 	//Attack Animations\\
 
 	//AttackLeft
-	m_animController->AddAnimation(animations["AttackLeft"].get<Animation>());
+	m_animController->AddAnimation(animations["Jump"].get<Animation>());
 	//AttackRight
-	m_animController->AddAnimation(animations["AttackRight"].get<Animation>());
-#ifdef TOPDOWN
-	//AttackUp
-	m_animController->AddAnimation(animations["AttackUp"].get<Animation>());
-	//AttackDown
-	m_animController->AddAnimation(animations["AttackDown"].get<Animation>());
-#endif
+	m_animController->AddAnimation(animations["Jump"].get<Animation>());
 
 	//Set Default Animation
-	m_animController->SetActiveAnim(IDLELEFT);
+	m_animController->SetActiveAnim(IDLERIGHT);
 
 
 }
@@ -83,7 +65,7 @@ void Player::Update()
 {
 	if (!m_locked)
 	{
-		MovementUpdate();
+		//MovementUpdate();
 	}
 
 	AnimationUpdate();
