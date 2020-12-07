@@ -32,6 +32,57 @@ void backgroundSpawn(int x)
 	ECS::GetComponent<Transform>(entity).SetPosition(vec3(x, 190.f, 0.f));
 }
 
+void PhysicsPlayground::InitPlayer(std::string& fileName, std::string& animationJSON, int width, int height, Sprite* sprite,
+	AnimationController* controller, Transform* transform, bool hasPhys, PhysicsBody* body)
+{
+	//Store references to the components
+	m_sprite = sprite;
+	m_animController = controller;
+	m_transform = transform;
+	m_hasPhysics = hasPhys;
+	if (hasPhys)
+	{
+		m_physBody = body;
+	}
+
+	//Initialize UVs
+	m_animController->InitUVs(fileName);
+
+	//Loads the texture and sets width and height
+	m_sprite->LoadSprite(fileName, width, height, true, m_animController);
+	m_animController->SetVAO(m_sprite->GetVAO());
+	m_animController->SetTextureSize(m_sprite->GetTextureSize());
+
+	//Loads in the animations json file
+	nlohmann::json animations = File::LoadJSON(animationJSON);
+
+	//IDLE ANIMATIONS\\
+	
+	//Idle Left
+	m_animController->AddAnimation(animations["Standing"].get<Animation>());
+	//Idle Right
+	m_animController->AddAnimation(animations["Standing"].get<Animation>());
+
+	//Walk Animations\\
+
+	//WalkLeft
+	m_animController->AddAnimation(animations["Walk"].get<Animation>());
+	//WalkRight
+	m_animController->AddAnimation(animations["Walk"].get<Animation>());
+
+	//Attack Animations\\
+
+	//AttackLeft
+	m_animController->AddAnimation(animations["Jump"].get<Animation>());
+	//AttackRight
+	m_animController->AddAnimation(animations["Jump"].get<Animation>());
+
+	//Set Default Animation
+	m_animController->SetActiveAnim(IDLELEFT);
+
+
+}
+
 void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 {
 	//Dynamically allocates the register
@@ -116,49 +167,6 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 		b2Body* tempBody;
 		b2BodyDef tempDef;
 	}
-	
-	//Link entity
-	{
-		/*Scene::CreatePhysicsSprite(m_sceneReg, "LinkStandby", 80, 60, 1.f, vec3(0.f, 30.f, 2.f), b2_dynamicBody, 0.f, 0.f, true, true)*/
-
-		auto entity = ECS::CreateEntity();
-		ECS::SetIsMainPlayer(entity, true);
-
-		//Add components
-		ECS::AttachComponent<Sprite>(entity);
-		ECS::AttachComponent<Transform>(entity);
-		ECS::AttachComponent<PhysicsBody>(entity);
-		ECS::AttachComponent<CanJump>(entity);
-
-		//Sets up the components
-		std::string fileName = "SM-Stand.png";
-		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 20, 15);
-		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
-		ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 30.f, 2.f));
-
-		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
-		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
-
-		float shrinkX = 0.f;
-		float shrinkY = 0.f;
-
-		b2Body* tempBody;
-		b2BodyDef tempDef;
-		tempDef.type = b2_dynamicBody;
-		tempDef.position.Set(float32(0.f), float32(30.f));
-
-		tempBody = m_physicsWorld->CreateBody(&tempDef);
-
-		//tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, PLAYER, ENEMY | OBJECTS | PICKUP | TRIGGER, 0.5f, 3.f);
-		tempPhsBody = PhysicsBody(entity, tempBody, float((tempSpr.GetHeight() - shrinkY)/2.f), vec2(0.f, 0.f), false, PLAYER, ENVIRONMENT | ENEMY | OBJECTS | PICKUP | TRIGGER | HEXAGON, 0.5f, 3.f);
-		//std::vector<b2Vec2> points = {b2Vec2(-tempSpr.GetWidth()/2.f, -tempSpr.GetHeight()/2.f), b2Vec2(tempSpr.GetWidth()/2.f, -tempSpr.GetHeight()/2.f), b2Vec2(0.f, tempSpr.GetHeight()/2.f)};
-		//tempPhsBody = PhysicsBody(entity, BodyType::TRIANGLE, tempBody, points, vec2(0.f, 0.f), false, PLAYER, ENEMY | OBJECTS | PICKUP | TRIGGER, 0.5f, 3.f);
-
-		tempPhsBody.SetRotationAngleDeg(0.f);
-		tempPhsBody.SetFixedRotation(true);
-		tempPhsBody.SetColor(vec4(1.f, 0.f, 1.f, 0.3f));
-		tempPhsBody.SetGravityScale(1.f);
-	}
 
 	//Setup static ground
 	{
@@ -193,13 +201,59 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 
 	}
 
+	//Link entity
+	{
+		/*Scene::CreatePhysicsSprite(m_sceneReg, "LinkStandby", 80, 60, 1.f, vec3(0.f, 30.f, 2.f), b2_dynamicBody, 0.f, 0.f, true, true)*/
 
+		auto entity = ECS::CreateEntity();
+		ECS::SetIsMainPlayer(entity, true);
+
+		//Add components
+		ECS::AttachComponent<Sprite>(entity);
+		ECS::AttachComponent<Transform>(entity);
+		ECS::AttachComponent<PhysicsBody>(entity);
+		ECS::AttachComponent<CanJump>(entity);
+		ECS::AttachComponent<AnimationController>(entity);
+
+		//Sets up the components
+		std::string fileName = "spritesheets/Spiderman.png";
+		std::string animations = "spidermanAnimations.json";
+		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+		InitPlayer(fileName, animations, 20, 15, &ECS::GetComponent<Sprite>(entity),
+			&ECS::GetComponent<AnimationController>(entity), &ECS::GetComponent<Transform>(entity), true, &ECS::GetComponent<PhysicsBody>(entity));
+		ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 30.f, 2.f));
+
+		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+		float shrinkX = 0.f;
+		float shrinkY = 0.f;
+
+		b2Body* tempBody;
+		b2BodyDef tempDef;
+		tempDef.type = b2_dynamicBody;
+		tempDef.position.Set(float32(0.f), float32(30.f));
+
+		tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+		//tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, PLAYER, ENEMY | OBJECTS | PICKUP | TRIGGER, 0.5f, 3.f);
+		tempPhsBody = PhysicsBody(entity, tempBody, float((tempSpr.GetHeight() - shrinkY) / 2.f), vec2(0.f, 0.f), false, PLAYER, ENVIRONMENT | ENEMY | OBJECTS | PICKUP | TRIGGER | HEXAGON, 0.5f, 3.f);
+		//std::vector<b2Vec2> points = {b2Vec2(-tempSpr.GetWidth()/2.f, -tempSpr.GetHeight()/2.f), b2Vec2(tempSpr.GetWidth()/2.f, -tempSpr.GetHeight()/2.f), b2Vec2(0.f, tempSpr.GetHeight()/2.f)};
+		//tempPhsBody = PhysicsBody(entity, BodyType::TRIANGLE, tempBody, points, vec2(0.f, 0.f), false, PLAYER, ENEMY | OBJECTS | PICKUP | TRIGGER, 0.5f, 3.f);
+
+		tempPhsBody.SetRotationAngleDeg(0.f);
+		tempPhsBody.SetFixedRotation(true);
+		tempPhsBody.SetColor(vec4(1.f, 0.f, 1.f, 0.3f));
+		tempPhsBody.SetGravityScale(1.f);
+	}
+	
 	ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 }
 
 void PhysicsPlayground::Update()
 {
+	AnimationUpdate();
 	SwingMechanic();
 }
 
@@ -414,6 +468,7 @@ void PhysicsPlayground::KeyboardHold()
 {
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
 
+	m_moving = false;
 	float speed = 1.f;
 	b2Vec2 vel = b2Vec2(0.f, 0.f);
 
@@ -425,10 +480,14 @@ void PhysicsPlayground::KeyboardHold()
 	if ((Input::GetKey(Key::A)) && (jump == false))
 	{
 		player.GetBody()->ApplyForceToCenter(b2Vec2(-120000.f * speed, 0.f), true);
+		m_facing = LEFT;
+		m_moving = true;
 	}
 	if ((Input::GetKey(Key::D)) && (jump == false))
 	{
 		player.GetBody()->ApplyForceToCenter(b2Vec2(120000.f * speed, 0.f), true);
+		m_facing = RIGHT;
+		m_moving = true;
 	} 
 
 	//Change physics body size for circle
@@ -457,13 +516,17 @@ void PhysicsPlayground::KeyboardDown()
 		{
 			player.GetBody()->ApplyLinearImpulseToCenter(b2Vec2(0.f, 160000.f), true);
 			canJump.m_canJump = false;
+			m_moving = false;
 		}
 	}
 	if (canJump.m_canJump == false) {
 		jump = true;
+		m_moving = true;
 	}
 	else if ((canJump.m_canJump == true)) {
 		jump = false;
+		m_moving = false;
+
 	}
 
 	if (Input::GetKeyDown(Key::Enter))
@@ -519,6 +582,46 @@ void PhysicsPlayground::SwingMechanic()
 	
 
 }
+
+void PhysicsPlayground::AnimationUpdate()
+{
+	m_animController = &ECS::GetComponent<AnimationController>(MainEntities::MainPlayer());
+	int activeAnimation = 0;
+
+	if (m_moving)
+	{
+		//Puts it into the WALK category
+		activeAnimation = WALK;
+	}
+	else if (m_attacking)
+	{
+		activeAnimation = ATTACK;
+
+		//Check if the attack animation is done
+		if (m_animController->GetAnimation(m_animController->GetActiveAnim()).GetAnimationDone())
+		{
+			//Will auto set to idle
+			m_locked = false;
+			m_attacking = false;
+			//Resets the attack animation
+			m_animController->GetAnimation(m_animController->GetActiveAnim()).Reset();
+
+			activeAnimation = IDLE;
+		}
+	}
+	else
+	{
+		activeAnimation = IDLE;
+	}
+
+	SetActiveAnimation(activeAnimation + (int)m_facing);
+}
+
+void PhysicsPlayground::SetActiveAnimation(int anim)
+{
+	m_animController->SetActiveAnim(anim);
+}
+
 void PhysicsPlayground::KeyboardUp()
 {
 	

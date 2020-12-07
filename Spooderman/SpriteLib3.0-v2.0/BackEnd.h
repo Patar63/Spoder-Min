@@ -14,6 +14,7 @@
 #include "MainEntities.h"
 #include "Scenes.h"
 #include "UI.h"
+#include "PhysicsPlayground.h"
 
 //Mouse Motion event
 typedef SDL_MouseMotionEvent MotionEvent;
