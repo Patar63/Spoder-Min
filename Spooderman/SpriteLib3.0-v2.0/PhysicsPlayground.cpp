@@ -538,6 +538,7 @@ void PhysicsPlayground::KeyboardDown()
 }
 
 static float Mx=0.0,My=0.0, Px = 0.0, Py = 0.0;
+static 	float score,scoreminus=0;
 void PhysicsPlayground::MouseClick(SDL_MouseButtonEvent evnt) {
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
 	int windowWidth = BackEnd::GetWindowWidth();
@@ -556,6 +557,7 @@ void PhysicsPlayground::MouseClick(SDL_MouseButtonEvent evnt) {
 		My = pos.y;
 		Px = m_sceneReg->get<Camera>(mainCam).GetPositionX();
 		Py = m_sceneReg->get<Camera>(mainCam).GetPositionY();
+		
 	}
 	}
 	if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_RIGHT)) {
@@ -564,10 +566,13 @@ void PhysicsPlayground::MouseClick(SDL_MouseButtonEvent evnt) {
 }
 void PhysicsPlayground::SwingMechanic()
 {
+
+	auto& canJump = ECS::GetComponent<CanJump>(MainEntities::MainPlayer());
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
 	int mainCam = MainEntities::MainCamera();
 	Px = m_sceneReg->get<Camera>(mainCam).GetPositionX();
 	Py = m_sceneReg->get<Camera>(mainCam).GetPositionY();
+	score = m_sceneReg->get<Camera>(mainCam).GetPositionX();
 	vec2 diff = vec2(Mx-Px,My-Py);
 	float magDiff= sqrt((diff.x * diff.x)+(diff.y*diff.y));
 	vec2 Rdiff = diff/magDiff;
@@ -605,14 +610,15 @@ void PhysicsPlayground::SwingMechanic()
 			b2Body* tempBody;
 			b2BodyDef tempDef;
 		}*/
+	}	
+		 if ((canJump.m_canJump == true)) {
+			 score = 0.f;
+			 scoreminus = m_sceneReg->get<Camera>(mainCam).GetPositionX();
 	}
-	else { printf("flase"); }
-	printf("( %f)", magDiff );
-	printf("(%f, %f)", Rdiff.x, Rdiff.y);
-	printf("(%f, %f)", Mx, My);
-	printf("(%f, %f)\n", Px, Py);
-
-	
+		 if(score / 10 - scoreminus / 10>0){
+	printf("( %f)\n", score/10-scoreminus/10 );
+		 }
+		 else { printf("( %f)\n",0.0); }
 
 }
 
